@@ -1,28 +1,26 @@
 <HTML 5>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR"
+    xmlns:th="htttp://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Page</title>
+    <title th:text="#{app.title}"> Brecho Online</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/
-5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
 
 
-<div class="container">
-    <h1 class="text-center mt-5">Welcome to the Index Page</h1>
-    <p class="text-center">This is a simple Spring Boot application.</p>
-    <div class="text-center mt-4">
-        <a href="/about" class="btn btn-primary">Learn More</a>
-    </div>  
+<body> 
+    
+    <h1>Oi, ta funcionando</h1>
+    <p th:text="#{app.welcome(#{ap.title})}">Bem vindo ao Brechó Online! </span></p>
+    <p>Esta é a página principal</p>
+    <p>ID: <span th:text="${id}">ID placeholder</span></p>
 
-</div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+</body>
 
 </HTML>
