@@ -1,0 +1,46 @@
+package com.brecho.online.service;
+
+
+import com.brecho.online.dto.ProdutoDTO;
+import com.brecho.online.entity.Produto;
+import com.brecho.online.repository.ProdutoRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.transaction.annotation.Transactional;
+
+
+@Service
+public class ProdutoService {
+private final ProdutoRepository repo;
+private final CategoriaService categoriaService;
+private final UsuarioService usuarioService;
+
+
+public ProdutoService(ProdutoRepository repo, CategoriaService categoriaService, UsuarioService usuarioService) {
+this.repo = repo;
+this.categoriaService = categoriaService;
+this.usuarioService = usuarioService;
+}
+
+
+public List<Produto> listarDisponiveis() { return repo.findByDisponivelTrue(); }
+
+
+@Transactional
+public Produto criar(ProdutoDTO dto, MultipartFile imagem) {
+Produto p = new Produto();
+p.setTitulo(dto.getTitulo());
+p.setDescricao(dto.getDescricao());
+p.setPreco(dto.getPreco());
+p.setCategoria(categoriaService.buscarPorId(dto.getCategoriaId()));
+p.setVendedor(usuarioService.buscarPorId(dto.getVendedorId()));
+return repo.save(p);
+}
+
+
+public ProdutoDTO buscarDTO(Long id) { /* mapeamento */ }
+
+
+@Transactional
+public void excluir(Long id) { repo.deleteById(id); }
+}

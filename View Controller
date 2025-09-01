@@ -1,0 +1,66 @@
+package com.brecho.online.controller;
+import com.brecho.online.service.ProdutoService;
+import com.brecho.online.service.CategoriaService;
+import jakarta.validation.Valid;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+
+@Controller
+@RequestMapping("/produtos")
+public class ProdutoController {
+private final ProdutoService produtoService;
+private final CategoriaService categoriaService;
+
+
+public ProdutoController(ProdutoService produtoService, CategoriaService categoriaService) {
+this.produtoService = produtoService;
+this.categoriaService = categoriaService;
+}
+
+
+@GetMapping
+public String listar(Model model) {
+model.addAttribute("produtos", produtoService.listarDisponiveis());
+return "produto/listar";
+}
+
+
+@GetMapping("/novo")
+public String novo(Model model) {
+model.addAttribute("produto", new ProdutoDTO());
+model.addAttribute("categorias", categoriaService.listar());
+return "produto/form";
+}
+
+
+@PostMapping
+public String salvar(@Valid @ModelAttribute("produto") ProdutoDTO dto,
+BindingResult result,
+@RequestParam("imagem") MultipartFile imagem,
+Model model) {
+if (result.hasErrors()) {
+model.addAttribute("categorias", categoriaService.listar());
+return "produto/form";
+}
+produtoService.criar(dto, imagem);
+return "redirect:/produtos";
+}
+
+
+@GetMapping("/{id}")
+public String detalhe(@PathVariable Long id, Model model) {
+model.addAttribute("produto", produtoService.buscarDTO(id));
+return "produto/detalhe";
+}
+
+
+@PostMapping("/{id}/excluir")
+public String excluir(@PathVariable Long id) {
+produtoService.excluir(id);
+return "redirect:/produtos";
+}
+}
